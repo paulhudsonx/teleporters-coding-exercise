@@ -102,7 +102,7 @@ public class TestTeleporters {
     private final int [] ints;
 
     static Ints ordered(int... ints) {
-      return new Ints(ints);
+      return new Ints(ints).sort();
     }
 
     private Ints(int... ints) {
@@ -124,7 +124,7 @@ public class TestTeleporters {
         return false;
       }
       Ints ints1 = (Ints) o;
-      return Arrays.equals(this.sort().ints, ints1.sort().ints);
+      return Arrays.equals(ints, ints1.ints);
     }
 
     @Override
