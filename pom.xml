@@ -11,10 +11,10 @@
     <!--  lookup parent from repository  -->
   </parent>
   <groupId>com.hudson</groupId>
-  <artifactId>lloyds-karat</artifactId>
+  <artifactId>teleporters</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>lloyds-karat</name>
+  <name>Teleporers coding exercise</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -110,6 +110,12 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>33.3.1-jre</version> <!-- latest as of late 2025 -->
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.27.6</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

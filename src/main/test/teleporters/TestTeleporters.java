@@ -1,11 +1,10 @@
 package teleporters;
 
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static teleporters.Teleporters.destinations;
-import static teleporters.TestTeleporters.Ints.ordered;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -89,52 +88,17 @@ public class TestTeleporters {
     String[] teleporters4 = {"97,93", "99,81", "36,33", "92,59", "17,3", "82,75", "4,1", "84,79", "54,4", "88,53", "91,37", "60,57", "61,7", "62,51", "31,19"};
     String[] teleporters5 = {"3,8", "8,9", "9,3"};
 
-    assertEquals(ordered(1, 2, 10, 6), ordered(destinations(teleporters1, 6, 0, 12)));
-    assertEquals(ordered(48, 49, 50, 51, 52, 29), ordered(destinations(teleporters2, 6, 46, 100)));
-    assertEquals(ordered(1, 2, 3, 4, 7, 8, 9, 10, 22), ordered(destinations(teleporters2, 10, 0, 50)));
-    assertEquals(ordered(96, 97, 98, 99, 100), ordered(destinations(teleporters3, 10, 95, 100)));
-    assertEquals(ordered(72, 73, 75, 76, 77, 79, 58), ordered(destinations(teleporters3, 10, 70, 100)));
-    assertEquals(ordered(1, 2, 3, 5, 6), ordered(destinations(teleporters4, 6, 0, 100)));
-    assertEquals(ordered(3, 4, 5, 6, 7, 8, 9), ordered(destinations(teleporters5, 7, 2, 20)));
+    assertThat(ints(1, 2, 10, 6)).containsExactlyInAnyOrder(destinations(teleporters1, 6, 0, 12));
+    assertThat(ints(1, 2, 10, 6)).containsExactlyInAnyOrder(destinations(teleporters1, 6, 0, 12));
+    assertThat(ints(48, 49, 50, 51, 52, 29)).containsExactlyInAnyOrder(destinations(teleporters2, 6, 46, 100));
+    assertThat(ints(1, 2, 3, 4, 7, 8, 9, 10, 22)).containsExactlyInAnyOrder(destinations(teleporters2, 10, 0, 50));
+    assertThat(ints(96, 97, 98, 99, 100)).containsExactlyInAnyOrder(destinations(teleporters3, 10, 95, 100));
+    assertThat(ints(72, 73, 75, 76, 77, 79, 58)).containsExactlyInAnyOrder(destinations(teleporters3, 10, 70, 100));
+    assertThat(ints(1, 2, 3, 5, 6)).containsExactlyInAnyOrder(destinations(teleporters4, 6, 0, 100));
+    assertThat(ints(3, 4, 5, 6, 7, 8, 9)).containsExactlyInAnyOrder(destinations(teleporters5, 7, 2, 20));
   }
 
-  static class Ints {
-    private final int [] ints;
-
-    static Ints ordered(int... ints) {
-      return new Ints(ints).sort();
-    }
-
-    private Ints(int... ints) {
-      this.ints = ints;
-    }
-
-    Ints sort() {
-      int [] copy = Arrays.copyOf(ints, ints.length);
-      Arrays.sort(copy);
-      return new Ints(copy);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-      if (this == o) {
-        return true;
-      }
-      if (o == null || getClass() != o.getClass()) {
-        return false;
-      }
-      Ints ints1 = (Ints) o;
-      return Arrays.equals(ints, ints1.ints);
-    }
-
-    @Override
-    public int hashCode() {
-      return Arrays.hashCode(ints);
-    }
-
-    @Override
-    public String toString() {
-      return Arrays.toString(ints);
-    }
+  private static int [] ints(int... ints) {
+    return ints;
   }
 }
