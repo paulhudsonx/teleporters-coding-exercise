@@ -6,7 +6,27 @@ import teleporters2.Teleporters2.Die.Side.Print;
 
 public class Teleporters2 {
 
+
   public interface Die {
+
+    interface Bias {
+
+      int randomise(int i, int size);
+      class Fixed implements Bias {
+
+        @Override
+        public int randomise(int from, int to) {
+          return 0;
+        }
+      }
+    }
+
+    public interface Roll {
+      Side sideUp();
+    }
+
+    Roll roll();
+
     interface Side {
       void export(Print print);
 
@@ -19,6 +39,11 @@ public class Teleporters2 {
       List<? extends Side> list();
 
       void export(Print print);
+
+      default Side pick(Bias bias) {
+        List<? extends Side> sides = list();
+        return sides.get(bias.randomise(1, sides.size()) - 1);
+      }
     }
 
     Sides sides();
@@ -27,6 +52,9 @@ public class Teleporters2 {
 
   static class Teleport {
 
+    public Tile from(Tile from) {
+      return null;
+    }
   }
 
   static class Teleports {
