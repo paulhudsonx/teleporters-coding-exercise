@@ -1,10 +1,8 @@
 package teleporters2;
 
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.IntStream;
 
-import teleporters2.Teleporters2.Die;
 import teleporters2.Teleporters2.Die.Bias;
 import teleporters2.Teleporters2.Die.Side;
 import teleporters2.Teleporters2.Die.Side.Print;
@@ -37,37 +35,6 @@ public class StandardDieBuilder implements DieBuilder {
   public DieBuilder withBias(Bias bias) {
     this.bias = bias;
     return this;
-  }
-
-  static class StandardDie implements Die {
-
-    private final Sides sides;
-    private final Bias bias;
-
-    StandardDie(Function<DieBuilder, DieBuilder> dieBuilderFunction) {
-      this(dieBuilderFunction.apply(new StandardDieBuilder()));
-    }
-
-    private StandardDie(DieBuilder dieBuilder) {
-      this(dieBuilder.buildSides(), dieBuilder.bias());
-    }
-
-
-    private StandardDie(Sides sides, Bias bias) {
-      this.sides = sides;
-      this.bias = bias;
-    }
-
-    @Override
-    public Roll roll() {
-      Side side = sides.pick(bias);
-      return () -> side;
-    }
-
-    @Override
-    public Sides sides() {
-      return sides;
-    }
   }
 
   private class SidesImpl implements Sides {
