@@ -2,6 +2,7 @@ package teleporters2;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.google.common.base.Suppliers;
@@ -64,21 +65,19 @@ public class GameFactoryBuilder {
 
     public Destination destination() {
 
-      Teleport teleport = new Teleport(teleporters);
-
-      return null;
+      return new Destination(rollspace(), this::tile);
     }
 
     public Rollspace rollspace() {
       return new Rollspace(dieSides);
     }
 
-    public int toIndex(Tile tile) {
-      return tile.index;
-    }
-
     static class Tiles {
       private List<Tile> tiles;
+
+      public Tiles(List<Tile> tiles) {
+        this.tiles = tiles;
+      }
     }
 
 
@@ -87,7 +86,11 @@ public class GameFactoryBuilder {
       private Supplier<Tile> jump = Suppliers.memoize(this::doJump);
 
       private Tile doJump() {
-        return GameFactory.this.tile(teleport.get().from(index));
+        return GameFactory.this.tile(bounded(teleport.get().from(index)));
+      }
+
+      private int bounded(int from) {
+        return Math.min(from, GameFactory.this.boardSize);
       }
 
       public Tile(Integer index) {
@@ -96,6 +99,10 @@ public class GameFactoryBuilder {
 
       public Tile jump() {
         return jump.get();
+      }
+
+      public Tile move(Roll r) {
+        return GameFactory.this.tile(bounded(index + r.roll())).jump();
       }
     }
 
@@ -108,14 +115,20 @@ public class GameFactoryBuilder {
 
     static class Destination {
 
-      private final List<Tile> tiles;
+      private final Rollspace rollspace;
+      private final Function<Integer, Tile> tileOf;
 
-      Destination(List<Tile> tiles) {
-        this.tiles = tiles;
+      Destination(Rollspace rollspace, Function<Integer, Tile> tileOf) {
+        this.rollspace = rollspace;
+        this.tileOf = tileOf;
       }
 
-      Tiles possibilities(Tile start, Rollspace rollspace) {
-        return null;
+      Tiles possibilities(Tile tile) {
+        return new Tiles(rollspace.rolls()
+          .stream()
+          .map(tile::move)
+          .distinct()
+          .toList());
       }
     }
   }

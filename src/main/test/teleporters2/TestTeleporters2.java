@@ -3,11 +3,13 @@ package teleporters2;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static teleporters2.Teleporters2.destinations;
 
 import org.junit.jupiter.api.Test;
 
 import teleporters2.GameFactoryBuilder.GameFactory;
 import teleporters2.GameFactoryBuilder.GameFactory.Tile;
+import teleporters2.GameFactoryBuilder.GameFactory.Tiles;
 import teleporters2.Teleport.TeleportPath;
 
 public class TestTeleporters2 {
@@ -80,6 +82,18 @@ public class TestTeleporters2 {
   }
 
   @Test
+  public void shouldConstructTilesWithoutTeleport() {
+    GameFactory gameFactory = new GameFactoryBuilder()
+      .withBoardSize(6)
+      .withStartPosition(0)
+      .withDieSides(6)
+      .build();
+
+    Tile tile1 = gameFactory.tile(1);
+    assertThat(tile1.jump()).isEqualTo(gameFactory.tile(1));
+  }
+
+  @Test
   public void shouldConstructTilesWithTeleport() {
     GameFactory gameFactory = new GameFactoryBuilder()
       .withTeleporters("1,3", "3,5")
@@ -104,18 +118,24 @@ public class TestTeleporters2 {
 
     //Destination destination = new Destination();
     Tile start = gameFactory.tile(0);
-    //destination.possibilities(start, gameFactory.rollspace()) TODO
-
+    Tiles actual = gameFactory.destination().possibilities(start);
+    assertThat(gameFactory.toIntArray(actual)).contains(1, 2, 3, 4, 5, 6);
   }
 
   @Test
-  public void testTransform() {
+  public void testSampleInputs() {
+    String[] teleporters1 = {"3,1", "4,2", "5,10"};
+    String[] teleporters2 = {"5,10", "6,22", "39,40", "40,49", "47,29"};
+    String[] teleporters3 = {"6,18", "36,26", "41,21", "49,55", "54,52", "71,58", "74,77", "78,76", "80,73", "92,85"};
+    String[] teleporters4 = {"97,93", "99,81", "36,33", "92,59", "17,3", "82,75", "4,1", "84,79", "54,4", "88,53", "91,37", "60,57", "61,7", "62,51", "31,19"};
     String[] teleporters5 = {"3,8", "8,9", "9,3"};
-    int dieSides = 6;
-    int startPosition;
-    int boardSize;
 
-    //assertThat(ints(1, 2, 10, 6)).containsExactlyInAnyOrder(destinations(teleporters1, 6, 0, 12));
-
+    assertThat(destinations(teleporters1, 6, 0, 12)).containsExactlyInAnyOrder(1, 2, 10, 6);
+    assertThat(destinations(teleporters2, 6, 46, 100)).containsExactlyInAnyOrder(48, 49, 50, 51, 52, 29);
+    assertThat(destinations(teleporters2, 10, 0, 50)).containsExactlyInAnyOrder(1, 2, 3, 4, 7, 8, 9, 10, 22);
+    assertThat(destinations(teleporters3, 10, 95, 100)).containsExactlyInAnyOrder(96, 97, 98, 99, 100);
+    assertThat(destinations(teleporters3, 10, 70, 100)).containsExactlyInAnyOrder(72, 73, 75, 76, 77, 79, 58);
+    assertThat(destinations(teleporters4, 6, 0, 100)).containsExactlyInAnyOrder(1, 2, 3, 5, 6);
+    assertThat(destinations(teleporters5, 7, 2, 20)).containsExactlyInAnyOrder(3, 4, 5, 6, 7, 8, 9);
   }
 }

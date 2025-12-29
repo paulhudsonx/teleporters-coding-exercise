@@ -17,8 +17,7 @@ public class Teleporters2 {
 
     Tile startTile = gameFactory.tile(from);
     Destination destination = gameFactory.destination();
-    Rollspace rollspace = gameFactory.rollspace();
-    Tiles tiles = destination.possibilities(startTile, rollspace);
+    Tiles tiles = destination.possibilities(startTile);
 
     return gameFactory.toIntArray(tiles);
   }
