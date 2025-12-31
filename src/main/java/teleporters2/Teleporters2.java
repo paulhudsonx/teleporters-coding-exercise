@@ -1,24 +1,16 @@
 package teleporters2;
 
-import teleporters2.GameFactoryBuilder.GameFactory;
-import teleporters2.GameFactoryBuilder.GameFactory.Destination;
-import teleporters2.GameFactoryBuilder.GameFactory.Tile;
-import teleporters2.GameFactoryBuilder.GameFactory.Tiles;
+import teleporters2.GameBoard.Tile;
+import teleporters2.GameBoard.Tiles;
 
 
 public class Teleporters2 {
 
   static int[] destinations(String[] teleports, int nDieSides, int from, int nBoardSize) {
-    GameFactory gameFactory = new GameFactoryBuilder()
-      .withBoardSize(nBoardSize)
-      .withDieSides(nDieSides)
-      .withTeleporters(teleports)
-      .build();
-
-    Tile startTile = gameFactory.tile(from);
-    Destination destination = gameFactory.destination();
-    Tiles tiles = destination.possibilities(startTile);
-
-    return gameFactory.toIntArray(tiles);
+    GameBoard gameBoard = new GameBoard(gb -> gb.withTeleporters(teleports).withBoardSize(nBoardSize));
+    RollSpace rollspace = new RollSpace(nDieSides);
+    Tile startTile = gameBoard.tile(from);
+    Tiles tiles = gameBoard.reachableTiles(startTile, rollspace);
+    return gameBoard.toIntArray(tiles);
   }
 }

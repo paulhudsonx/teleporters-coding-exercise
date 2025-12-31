@@ -7,9 +7,8 @@ import static teleporters2.Teleporters2.destinations;
 
 import org.junit.jupiter.api.Test;
 
-import teleporters2.GameFactoryBuilder.GameFactory;
-import teleporters2.GameFactoryBuilder.GameFactory.Tile;
-import teleporters2.GameFactoryBuilder.GameFactory.Tiles;
+import teleporters2.GameBoard.Tile;
+import teleporters2.GameBoard.Tiles;
 import teleporters2.Teleport.TeleportPath;
 
 public class TestTeleporters2 {
@@ -17,18 +16,14 @@ public class TestTeleporters2 {
 
   @Test
   public void testBuildTileWithIndex1() {
-    GameFactory gameFactory = new GameFactoryBuilder()
-      .withBoardSize(2)
-      .build();
+    GameBoard gameFactory = new GameBoard(builder -> builder.withBoardSize(2));
     Tile tile = gameFactory.tile(1);
     assertThat(tile).isEqualTo(gameFactory.tile(1));
   }
 
   @Test
   public void testBuildTileWithIndex2() {
-    GameFactory gameFactory = new GameFactoryBuilder()
-      .withBoardSize(2)
-      .build();
+    GameBoard gameFactory = new GameBoard(builder -> builder.withBoardSize(2));
     Tile tile0 = gameFactory.tile(0);
     Tile tile2 = gameFactory.tile(2);
     assertThat(tile0).isNotEqualTo(tile2);
@@ -36,9 +31,7 @@ public class TestTeleporters2 {
 
   @Test
   public void testTileIndexShouldBeUpperBoundedByBoardSize() {
-    GameFactory gameFactory = new GameFactoryBuilder()
-      .withBoardSize(2)
-      .build();
+    GameBoard gameFactory = new GameBoard(builder -> builder.withBoardSize(2));
     assertThatThrownBy(() -> gameFactory.tile(3))
       .isInstanceOf(IllegalArgumentException.class)
       .hasMessageContaining("Tile index greater than board size");
@@ -46,21 +39,15 @@ public class TestTeleporters2 {
 
   @Test
   public void testTileIndexShouldBeLowerBoundedBy1() {
-    GameFactory gameFactory = new GameFactoryBuilder()
-      .withBoardSize(2)
-      .build();
+    GameBoard gameFactory = new GameBoard(builder -> builder.withBoardSize(2));
     assertThatThrownBy(() -> gameFactory.tile(-1))
       .isInstanceOf(IllegalArgumentException.class)
       .hasMessageContaining("Tile index less than 0");
   }
 
   @Test
-  public void testGameFactoryRollspace() {
-    Rollspace rollspace = new GameFactoryBuilder()
-      .withDieSides(2)
-      .build()
-      .rollspace();
-    assertThat(rollspace.rolls())
+  public void testGameFactoryRollSpace() {
+    assertThat(new RollSpace(2).rolls())
       .map(Roll::roll)
       .contains(1, 2);
   }
@@ -83,25 +70,14 @@ public class TestTeleporters2 {
 
   @Test
   public void shouldConstructTilesWithoutTeleport() {
-    GameFactory gameFactory = new GameFactoryBuilder()
-      .withBoardSize(6)
-      .withStartPosition(0)
-      .withDieSides(6)
-      .build();
-
-    Tile tile1 = gameFactory.tile(1);
-    assertThat(tile1.jump()).isEqualTo(gameFactory.tile(1));
+    GameBoard gameBoard = new GameBoard(builder -> builder.withBoardSize(1));
+    Tile tile1 = gameBoard.tile(1);
+    assertThat(tile1.jump()).isEqualTo(gameBoard.tile(1));
   }
 
   @Test
   public void shouldConstructTilesWithTeleport() {
-    GameFactory gameFactory = new GameFactoryBuilder()
-      .withTeleporters("1,3", "3,5")
-      .withBoardSize(6)
-      .withStartPosition(0)
-      .withDieSides(6)
-      .build();
-
+    GameBoard gameFactory = new GameBoard(builder -> builder.withTeleporters("1,3", "3,5").withBoardSize(6));
     Tile tile1 = gameFactory.tile(1);
     assertThat(tile1.jump()).isEqualTo(gameFactory.tile(3));
     assertThat(gameFactory.tile(5)).isEqualTo(tile1.jump().jump());
@@ -109,17 +85,11 @@ public class TestTeleporters2 {
 
 
   @Test
-  public void testRollspacePossibleMoves() {
-    GameFactory gameFactory = new GameFactoryBuilder()
-      .withBoardSize(6)
-      .withStartPosition(0)
-      .withDieSides(6)
-      .build();
-
-    //Destination destination = new Destination();
-    Tile start = gameFactory.tile(0);
-    Tiles actual = gameFactory.destination().possibilities(start);
-    assertThat(gameFactory.toIntArray(actual)).contains(1, 2, 3, 4, 5, 6);
+  public void testRollSpaceReachableTiles() {
+    GameBoard gameBoard = new GameBoard(builder -> builder.withBoardSize(6));
+    Tile start = gameBoard.tile(0);
+    Tiles actual = gameBoard.reachableTiles(start, new RollSpace(6));
+    assertThat(gameBoard.toIntArray(actual)).contains(1, 2, 3, 4, 5, 6);
   }
 
   @Test
