@@ -1,9 +1,16 @@
 package teleporters2;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.base.Suppliers;
 
@@ -106,5 +113,52 @@ class GameBoard {
     return tiles.tiles.stream()
       .mapToInt(t -> t.index)
       .toArray();
+  }
+
+  static class Teleport {
+    private final String[] teleports;
+    private final Supplier<Map<Integer, Integer>> pathMap = Suppliers.memoize(
+      this::teleportMap);
+
+    Teleport(String... teleports) {
+      this.teleports = teleports;
+    }
+
+    int from(int tile) {
+      return pathMap.get().getOrDefault(tile, tile);
+    }
+
+    private Map<Integer, Integer> teleportMap() {
+      return Arrays.stream(teleports)
+        .map(TeleportPath::new)
+        .map(TeleportPath::pair)
+        .collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
+    }
+
+    static class TeleportPath {
+      private static final Pattern pattern = Pattern.compile("(\\d+),(\\d+)");
+      private final String path;
+      private final Supplier<Pair<Integer, Integer>> pair = Suppliers.memoize(this::pair);
+
+      TeleportPath(String path) {
+        this.path = path;
+      }
+
+      Pair<Integer, Integer> path() {
+        return pair.get();
+      }
+
+      private Pair<Integer, Integer>  pair() {
+        Matcher m = pattern.matcher(path);
+        if (m.matches()) {
+          Integer left = Integer.parseInt(m.group(1));
+          Integer right = Integer.parseInt(m.group(2));
+          return Pair.of(left, right);
+        }
+        else {
+          throw new IllegalStateException("Invalid teleport path " + path);
+        }
+      }
+    }
   }
 }

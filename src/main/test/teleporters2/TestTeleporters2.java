@@ -7,9 +7,9 @@ import static teleporters2.Teleporters2.destinations;
 
 import org.junit.jupiter.api.Test;
 
+import teleporters2.GameBoard.Teleport.TeleportPath;
 import teleporters2.GameBoard.Tile;
 import teleporters2.GameBoard.Tiles;
-import teleporters2.Teleport.TeleportPath;
 
 public class TestTeleporters2 {
 
@@ -55,13 +55,13 @@ public class TestTeleporters2 {
   @Test
   public void shouldConstructTeleportPath() {
     TeleportPath teleportPath = new TeleportPath("1,3");
-    assertEquals(1, teleportPath.from());
-    assertEquals(3, teleportPath.to());
+    assertEquals(1, teleportPath.path().getLeft());
+    assertEquals(3, teleportPath.path().getRight());
   }
 
   @Test
   public void shouldTeleportFromMultipleLocations() {
-    Teleport teleport = new Teleport("1,3", "4,1");
+    GameBoard.Teleport teleport = new GameBoard.Teleport("1,3", "4,1");
     assertThat(teleport.from(1)).isEqualTo(3);
     assertThat(teleport.from(2)).isEqualTo(2);
     assertThat(teleport.from(3)).isEqualTo(3);
