@@ -14,11 +14,18 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.base.Suppliers;
 
-class GameBoard {
+public class GameBoard {
 
   private final HashMap<Integer, Tile> tileMap = new HashMap<>();
   private final Supplier<Teleport> teleport = Suppliers.memoize(this::teleport);
   private final Config config;
+
+  public List<Tile> tiles(int... tiles) {
+    return Arrays.stream(tiles)
+      .mapToObj(this::tile)
+      .toList();
+  }
+
   static class Builder {
     private String[] teleporters = {};
     private int boardSize;
@@ -47,7 +54,7 @@ class GameBoard {
     }
   }
 
-  Teleport teleport() {
+  private Teleport teleport() {
     return new Teleport(config.teleporters);
   }
 
@@ -65,25 +72,29 @@ class GameBoard {
     return tileMap.computeIfAbsent(index, Tile::new);
   }
 
-  public Tiles reachableTiles(Tile startTile, RollSpace rollSpace) {
-    return new Tiles(rollSpace.rolls()
-      .stream()
-      .map(startTile::move)
-      .distinct()
-      .toList());
-  }
+  public static class ReachableTiles {
+    private final Tile tile;
+    private final RollSpace rollSpace;
 
-  static class Tiles {
+    public ReachableTiles(Tile tile, RollSpace rollSpace) {
+      this.tile = tile;
+      this.rollSpace = rollSpace;
+    }
 
-    private final List<Tile> tiles;
+    public List<Tile> tiles() {
+      return rollSpace.rolls()
+        .stream()
+        .map(tile::move)
+        .distinct()
+        .toList();
+    }
 
-    public Tiles(List<Tile> tiles) {
-      this.tiles = tiles;
+    int[] indexes() {
+      return tiles().stream().mapToInt(t -> t.index).toArray();
     }
   }
 
-
-  class Tile {
+  public class Tile {
 
     private final Integer index;
     private final Supplier<Tile> jump = Suppliers.memoize(this::doJump);
@@ -96,23 +107,17 @@ class GameBoard {
       return Math.min(from, config.boardSize);
     }
 
-    public Tile(Integer index) {
+    private Tile(int index) {
       this.index = index;
     }
 
-    public Tile jump() {
+    Tile jump() {
       return jump.get();
     }
 
-    public Tile move(Roll r) {
-      return GameBoard.this.tile(bounded(index + r.roll())).jump();
+    public Tile move(int roll) {
+      return GameBoard.this.tile(bounded(index + roll)).jump();
     }
-  }
-
-  public int[] toIntArray(Tiles tiles) {
-    return tiles.tiles.stream()
-      .mapToInt(t -> t.index)
-      .toArray();
   }
 
   static class Teleport {

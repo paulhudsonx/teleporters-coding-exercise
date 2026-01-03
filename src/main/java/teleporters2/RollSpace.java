@@ -10,9 +10,7 @@ final class RollSpace {
     this.sides = sides;
   }
 
-  List<Roll> rolls() {
-    return IntStream.rangeClosed(1, sides)
-      .mapToObj(Roll::new)
-      .toList();
+  List<Integer> rolls() {
+    return IntStream.rangeClosed(1, sides).boxed().toList();
   }
 }

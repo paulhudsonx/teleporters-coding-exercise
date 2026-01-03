@@ -11,7 +11,7 @@
     </coordinates>
     <panel_attributes>Game
 --
-+Game(Die die)
++Game()
 --
 +scenarios(Tile tile): Scenarios</panel_attributes>
     <additional_attributes/>
@@ -27,7 +27,6 @@
     <panel_attributes>/Die/
 --
 +roll():Roll
-+scenarios(): List&lt;Roll&gt;
 +sides():List&lt;Side&gt;</panel_attributes>
     <additional_attributes/>
   </element>
@@ -204,8 +203,8 @@ m1=n</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>50</x>
-      <y>440</y>
+      <x>60</x>
+      <y>260</y>
       <w>280</w>
       <h>180</h>
     </coordinates>
@@ -243,17 +242,6 @@ m1=n</panel_attributes>
     <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>770</x>
-      <y>170</y>
-      <w>30</w>
-      <h>360</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-&gt;&gt;&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;340.0</additional_attributes>
-  </element>
-  <element>
     <id>UMLClass</id>
     <coordinates>
       <x>520</x>
@@ -277,5 +265,42 @@ m1=n</panel_attributes>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>160</x>
+      <y>530</y>
+      <w>160</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Rollspace
+--
++rolls(): List&lt;Roll&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>230</x>
+      <y>580</y>
+      <w>30</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>170</x>
+      <y>650</y>
+      <w>140</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Roll
+--
++roll():int</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>
