@@ -1,4 +1,4 @@
-package teleporters2;
+package teleporters;
 
 import java.util.Arrays;
 import java.util.HashMap;

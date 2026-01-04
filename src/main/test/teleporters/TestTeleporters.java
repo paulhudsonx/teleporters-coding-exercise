@@ -1,16 +1,16 @@
-package teleporters2;
+package teleporters;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static teleporters2.Teleporters.destinations;
+import static teleporters.Teleporters.destinations;
 
 import org.junit.jupiter.api.Test;
 
-import teleporters2.GameBoard.ReachableTiles;
-import teleporters2.GameBoard.Teleport.TeleportPath;
-import teleporters2.GameBoard.Tile;
+import teleporters.GameBoard.ReachableTiles;
+import teleporters.GameBoard.Teleport.TeleportPath;
+import teleporters.GameBoard.Tile;
 
 public class TestTeleporters {
   @Test

@@ -1,4 +1,4 @@
-package teleporters2;
+package teleporters;
 
 import java.util.List;
 import java.util.stream.IntStream;

@@ -1,7 +1,7 @@
-package teleporters2;
+package teleporters;
 
-import teleporters2.GameBoard.ReachableTiles;
-import teleporters2.GameBoard.Tile;
+import teleporters.GameBoard.ReachableTiles;
+import teleporters.GameBoard.Tile;
 
 public class Teleporters {
 

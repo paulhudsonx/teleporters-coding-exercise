@@ -42,7 +42,7 @@ They can roll values from 1 to 6, leading to the following tile outcomes: [_, _,
 Removing duplicates, the final possible tiles are: [1, 2, 10, 6].
 
 Additional Inputs:
-teleporters2 = ["5,10", "6,22", "39,40", "40,49", "47,29"]
+teleporters = ["5,10", "6,22", "39,40", "40,49", "47,29"]
 teleporters3 = ["6,18", "36,26", "41,21", "49,55", "54,52",
                 "71,58", "74,77", "78,76", "80,73", "92,85"]
 teleporters4 = ["97,93", "99,81", "36,33", "92,59", "17,3",
@@ -55,8 +55,8 @@ All Test Cases:
                            die  start
                           sides,tile  N
 destinations(teleporters1,  6,    0,  12) => [1, 2, 10, 6]
-destinations(teleporters2,  6,   46, 100) => [48, 49, 50, 51, 52, 29]
-destinations(teleporters2, 10,    0,  50) => [1, 2, 3, 4, 7, 8, 9, 10, 22]
+destinations(teleporters,  6,   46, 100) => [48, 49, 50, 51, 52, 29]
+destinations(teleporters, 10,    0,  50) => [1, 2, 3, 4, 7, 8, 9, 10, 22]
 destinations(teleporters3, 10,   95, 100) => [96, 97, 98, 99, 100]
 destinations(teleporters3, 10,   70, 100) => [72, 73, 75, 76, 77, 79, 58]
 destinations(teleporters4,  6,    0, 100) => [1, 2, 3, 5, 6]
